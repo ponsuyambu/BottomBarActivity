@@ -5,16 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.Map;
-
-import in.appchef.bottombaractivity.screens.SepaStep1;
 
 
 /**
@@ -27,7 +22,6 @@ public class TabFragment extends BaseFragment {
     private static final String KEY_TAB_NAME = "TAB_NAME";
     private static final String KEY_ID = "ID";
     private boolean isAlreadyCreated = false;
-    private TextView mTvTabName;
     private String mTabName = "TAB";
     private int mId = 0;
     private
@@ -83,9 +77,6 @@ public class TabFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
-        mTvTabName = (TextView) view.findViewById(R.id.tvTabName);
-        mTvTabName.setText(mTabName);
 
         if (!isAlreadyCreated) {
             commitFragment();

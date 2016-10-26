@@ -1,35 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_main"
+    android:id="@+id/coordinatorlayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="in.appchef.bottombaractivity.BottomBarActivity">
+    android:layout_height="match_parent">
 
     <android.support.v4.widget.NestedScrollView
-        android:id="@+id/myScrollingContent"
-        android:layout_above="@+id/bottom_navigation_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:background="#888"
+        android:fillViewport="true"
+        android:layout_height="match_parent">
 
         <RelativeLayout
+            android:background="#00f"
             android:layout_width="match_parent"
-            android:background="#FF0"
             android:layout_height="match_parent">
-            <include layout="@layout/bottom_bar_navigation_container"/>
+            <include layout="@layout/bottom_bar_navigation_container" />
+
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
+
     <android.support.design.widget.BottomNavigationView
-        android:layout_alignParentBottom="true"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/bottom_navigation_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:itemBackground="@color/color1"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        app:itemBackground="@color/colorPrimary"
         app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white" />
-
-</RelativeLayout>
+        app:itemTextColor="@color/white"
+        app:layout_behavior=".BottomNavigationBehavior" />
+</android.support.design.widget.CoordinatorLayout>
