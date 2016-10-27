@@ -16,7 +16,7 @@ import java.util.Map;
  * Created by root on 17/10/16.
  */
 
-public class TabFragment extends BaseFragment {
+public class TabFragment extends BaseFragment implements BaseScreenFragment.BaseScreenCommunicator{
     public static final String KEY_MENU_ID = "MENU_ID";
     public static final String KEY_INITIAL_FRAGMENT = "INITIAL_FRAGMENT";
     private static final String KEY_TAB_NAME = "TAB_NAME";
@@ -99,7 +99,7 @@ public class TabFragment extends BaseFragment {
                                 fragment.setArguments(screen.extras);
                             }
                             getChildFragmentManager().beginTransaction()
-                                    .replace(R.id.rlTabFragmentContainer, fragment)
+                                    .replace(getContainerId(), fragment)
                                     .commit();
                         }
                     } catch (java.lang.InstantiationException e) {
@@ -128,13 +128,18 @@ public class TabFragment extends BaseFragment {
         if(getChildFragmentManager().getBackStackEntryCount() == 0){
             return false;
         }else {
-            if(getChildFragmentManager().findFragmentById(R.id.rlTabFragmentContainer) != null){
-                BaseFragment baseFragment = (BaseFragment) getChildFragmentManager().findFragmentById(R.id.rlTabFragmentContainer);
+            if(getChildFragmentManager().findFragmentById(getContainerId()) != null){
+                BaseFragment baseFragment = (BaseFragment) getChildFragmentManager().findFragmentById(getContainerId());
                 if(!baseFragment.onBackPressed()){ //if it is not handled
                     getChildFragmentManager().popBackStack();
                 }
             }
             return true;
         }
+    }
+
+    @Override
+    public int getContainerId() {
+        return R.id.rlTabFragmentContainer;
     }
 }
