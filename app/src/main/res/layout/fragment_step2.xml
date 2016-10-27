@@ -4,15 +4,21 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:text="Sepa - Step 3"
+        android:text="Step 2"
         android:gravity="center"
-        android:layout_gravity="center"
         android:textSize="25dp"
         android:textColor="#e7e004"
+        android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="100dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <Button
+        android:layout_gravity="center"
+        android:id="@+id/btnGoStep3"
+        android:layout_width="wrap_content"
+        android:text="Go to step 3"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

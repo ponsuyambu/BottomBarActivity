@@ -2,7 +2,6 @@ package in.appchef.bottombaractivity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.MenuRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,16 +10,15 @@ import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import in.appchef.bottombaractivity.screens.SepaStep1;
-import in.appchef.bottombaractivity.screens.SepaStep2;
-import in.appchef.bottombaractivity.screens.SepaStep3;
+import in.appchef.bottombaractivity.screens.Step1;
+import in.appchef.bottombaractivity.screens.Step2;
+import in.appchef.bottombaractivity.screens.Step3;
 
 public class BottomBarActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
@@ -90,9 +88,9 @@ public class BottomBarActivity extends AppCompatActivity implements BottomNaviga
 
     public Map<Integer,BottomNavigationViewScreen> getScreens(){
         Map<Integer,BottomNavigationViewScreen> screens = new HashMap<>();
-        BottomNavigationViewScreen screen1 = new BottomNavigationViewScreen(SepaStep1.class);
-        BottomNavigationViewScreen screen2 = new BottomNavigationViewScreen(SepaStep2.class);
-        BottomNavigationViewScreen screen3 = new BottomNavigationViewScreen(SepaStep3.class);
+        BottomNavigationViewScreen screen1 = new BottomNavigationViewScreen(Step1.class);
+        BottomNavigationViewScreen screen2 = new BottomNavigationViewScreen(Step2.class);
+        BottomNavigationViewScreen screen3 = new BottomNavigationViewScreen(Step3.class);
         screens.put(R.id.action_one,screen1);
         screens.put(R.id.action_two,screen2);
         screens.put(R.id.action_three,screen3);

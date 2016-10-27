@@ -43,4 +43,8 @@ public class BaseFragment extends Fragment {
         super.onDestroy();
         Log.d(LIFE_CYCLE,"onDestroy - "+this);
     }
+
+    public boolean onBackPressed(){
+        return false;
+    }
 }

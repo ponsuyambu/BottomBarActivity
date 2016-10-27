@@ -128,7 +128,12 @@ public class TabFragment extends BaseFragment {
         if(getChildFragmentManager().getBackStackEntryCount() == 0){
             return false;
         }else {
-            getChildFragmentManager().popBackStack();
+            if(getChildFragmentManager().findFragmentById(R.id.rlTabFragmentContainer) != null){
+                BaseFragment baseFragment = (BaseFragment) getChildFragmentManager().findFragmentById(R.id.rlTabFragmentContainer);
+                if(!baseFragment.onBackPressed()){ //if it is not handled
+                    getChildFragmentManager().popBackStack();
+                }
+            }
             return true;
         }
     }
