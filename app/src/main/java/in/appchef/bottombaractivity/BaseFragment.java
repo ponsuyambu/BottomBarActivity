@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
 
 /**
  * Created by root on 17/10/16.
@@ -46,5 +47,11 @@ public class BaseFragment extends Fragment {
 
     public boolean onBackPressed(){
         return false;
+    }
+
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        Log.d(LIFE_CYCLE,"onCreateAnimation - "+this);
+        return super.onCreateAnimation(transit, enter, nextAnim);
     }
 }

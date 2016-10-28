@@ -2,7 +2,9 @@ package in.appchef.bottombaractivity.screens;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
 
 import in.appchef.bottombaractivity.BaseScreenFragment;
 import in.appchef.bottombaractivity.FIntent;
@@ -32,4 +34,6 @@ public class Step2 extends BaseScreenFragment<BindingStep2> {
         setTitle("Step 2");
         showBackButton();
     }
+
+
 }

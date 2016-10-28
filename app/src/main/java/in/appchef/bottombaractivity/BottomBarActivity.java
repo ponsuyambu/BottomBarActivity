@@ -57,6 +57,7 @@ public class BottomBarActivity extends AppCompatActivity implements BottomNaviga
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+        SharedStorage.PLAY_NEXT_ENTER_ANIMATION = false;
         if(id == R.id.action_one){
             mTabHost.setCurrentTab(0);
         }else if(id == R.id.action_two){

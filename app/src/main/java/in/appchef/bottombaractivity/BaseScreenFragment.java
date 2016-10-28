@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 
 /**
  * Created by root on 26/10/16.
@@ -35,6 +36,8 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
     private FragmentManager manager = null;
     protected  final String TAG = getClass().getSimpleName();
     protected T binding;
+    private static final String IS_ALREADY_CREATED = "BSF_IS_ALREADY_CREATED";
+    private boolean isAlreadyCreated = false;
 
 
     @Nullable
@@ -77,6 +80,7 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
                 containerId = communicator.getContainerId();
             }
         }
+        isAlreadyCreated = true;
     }
 
     protected abstract @LayoutRes int getLayoutResource();
@@ -106,7 +110,7 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
 
 
     protected void showBackButton(){
-        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+//        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         mToolbar.setNavigationOnClickListener(new BackNavigationClickListener(this));
     }
 
@@ -326,8 +330,8 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
             popExitAnimation = fIntent.getPopExitAnimation() == 0 ? R.anim.left_to_right_exit
                     : fIntent.getPopExitAnimation();
 
-//            transaction.setCustomAnimations(enterAnimation, exitAnimation,
-//                    popEnterAnimation, popExitAnimation);
+            transaction.setCustomAnimations(enterAnimation, exitAnimation,
+                    popEnterAnimation, popExitAnimation);
         }
         if (!fIntent.getFlags().contains(FIntent.FLAG_NO_HISTORY)) {
             Log.i("BACK STACK", "Transaction added to backstack");
@@ -354,5 +358,17 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
     protected void clearBackStack() {
         getFragmentManager().popBackStack(null,
                 FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        Log.d("onCreateAnimation","onCreateAnimation: transit: "+transit +";; enter: "+enter+";; nextAnim: "+nextAnim+";; "+this);
+         Animation animation = super.onCreateAnimation(transit, enter, nextAnim);
+        if(!SharedStorage.PLAY_NEXT_ENTER_ANIMATION && enter){
+            animation = new Animation(){};
+            animation.setDuration(0);
+            SharedStorage.PLAY_NEXT_ENTER_ANIMATION = true;
+        }
+        return animation;
     }
 }
