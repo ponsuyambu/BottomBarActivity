@@ -23,7 +23,7 @@ public class Step4 extends BaseScreenFragment<BindingStep4> {
         binding.btnGoStep5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startFragment(new FIntent(Step3.class,getArguments()));
+                startFragment(new FIntent(Step5.class,getArguments()));
             }
         });
     }

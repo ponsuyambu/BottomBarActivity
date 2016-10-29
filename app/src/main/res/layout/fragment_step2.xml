@@ -25,5 +25,12 @@
         android:text="Go to step 3"
         android:layout_height="wrap_content" />
 
+    <EditText
+        android:id="@+id/edtStep2"
+        android:layout_margin="5dp"
+        android:hint="Sample Edit text to check state"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
 </LinearLayout>
     </layout>
