@@ -23,10 +23,11 @@ public class Step2 extends BaseScreenFragment<BindingStep2> {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        view.findViewById(R.id.btnGoStep3).setOnClickListener(new View.OnClickListener() {
+        binding.tvStep.setText(getArguments().getString(ParamKeys.KEY_TAB) + " - Step 2 ");
+        binding.btnGoStep3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startFragment(new FIntent(Step3.class));
+                startFragment(new FIntent(Step3.class,getArguments()));
             }
         });
         setTitle("Step 2");

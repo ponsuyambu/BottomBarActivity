@@ -31,12 +31,12 @@ public class Step1 extends BaseScreenFragment<BindingStep1> {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setTitle("Step 1");
-
         inflateMenu(R.menu.menu_step1);
+        binding.tvStep.setText(getArguments().getString(ParamKeys.KEY_TAB) + " - Step 1 ");
         binding.btnGoStep2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startFragment(new FIntent(Step2.class));
+                startFragment(new FIntent(Step2.class,getArguments()));
             }
         });
 

@@ -16,11 +16,10 @@ import android.view.MenuItem;
 import java.util.HashMap;
 import java.util.Map;
 
+import in.appchef.bottombaractivity.screens.ParamKeys;
 import in.appchef.bottombaractivity.screens.Step1;
-import in.appchef.bottombaractivity.screens.Step2;
-import in.appchef.bottombaractivity.screens.Step3;
 
-public class BottomBarActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+public class BottomBarActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener,ParamKeys{
 
     private FragmentTabHost mTabHost;
     private BottomNavigationView mBottomNavigationView;
@@ -76,8 +75,10 @@ public class BottomBarActivity extends AppCompatActivity implements BottomNaviga
             mBBSelectedIndex = 2;
         }else if(id == R.id.action_four){
             mBBSelectedIndex = 3;
+            mTabHost.setCurrentTab(3);
         }else if(id == R.id.action_five){
             mBBSelectedIndex = 4;
+            mTabHost.setCurrentTab(4);
         }
         return false;
     }
@@ -102,12 +103,27 @@ public class BottomBarActivity extends AppCompatActivity implements BottomNaviga
 
     public Map<Integer,BottomNavigationViewScreen> getScreens(){
         Map<Integer,BottomNavigationViewScreen> screens = new HashMap<>();
-        BottomNavigationViewScreen screen1 = new BottomNavigationViewScreen(Step1.class);
-        BottomNavigationViewScreen screen2 = new BottomNavigationViewScreen(Step2.class);
-        BottomNavigationViewScreen screen3 = new BottomNavigationViewScreen(Step3.class);
+        Bundle screen1Bundle = new Bundle();
+        screen1Bundle.putString(KEY_TAB,"Tab 1");
+        BottomNavigationViewScreen screen1 = new BottomNavigationViewScreen(Step1.class,screen1Bundle);
+        Bundle screen2Bundle = new Bundle();
+        screen2Bundle.putString(KEY_TAB,"Tab 2");
+        BottomNavigationViewScreen screen2 = new BottomNavigationViewScreen(Step1.class,screen2Bundle);
+        Bundle screen3Bundle = new Bundle();
+        screen3Bundle.putString(KEY_TAB,"Tab 3");
+        BottomNavigationViewScreen screen3 = new BottomNavigationViewScreen(Step1.class,screen3Bundle);
+        Bundle screen4Bundle = new Bundle();
+        screen4Bundle.putString(KEY_TAB,"Tab 4");
+        BottomNavigationViewScreen screen4 = new BottomNavigationViewScreen(Step1.class,screen4Bundle);
+        Bundle screen5Bundle = new Bundle();
+        screen5Bundle.putString(KEY_TAB,"Tab 5");
+        BottomNavigationViewScreen screen5 = new BottomNavigationViewScreen(Step1.class,screen5Bundle);
+
         screens.put(R.id.action_one,screen1);
         screens.put(R.id.action_two,screen2);
         screens.put(R.id.action_three,screen3);
+        screens.put(R.id.action_four,screen4);
+        screens.put(R.id.action_five,screen5);
         return screens;
     }
 

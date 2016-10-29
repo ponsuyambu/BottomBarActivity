@@ -1,29 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-    <data class = "BindingStep2"/>
+    <data class = "BindingStep5"/>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:background="#698"
+    android:background="#be685d"
     android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/tvStep"
-        android:text="Step 2"
+        android:text="Step 5"
         android:gravity="center"
+        android:layout_gravity="center"
         android:textSize="25dp"
         android:textColor="#e7e004"
-        android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="100dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <Button
-        android:layout_gravity="center"
-        android:id="@+id/btnGoStep3"
-        android:layout_width="wrap_content"
-        android:text="Go to step 3"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>
     </layout>

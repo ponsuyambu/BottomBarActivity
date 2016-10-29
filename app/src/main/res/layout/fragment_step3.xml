@@ -7,6 +7,7 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/tvStep"
         android:text="Step 3"
         android:gravity="center"
         android:layout_gravity="center"
@@ -16,7 +17,12 @@
         android:layout_marginBottom="100dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
+    <Button
+        android:layout_gravity="center"
+        android:id="@+id/btnGoStep4"
+        android:layout_width="wrap_content"
+        android:text="Go to step 4"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
     </layout>
