@@ -26,9 +26,15 @@ public class BottomBarActivity extends AppCompatActivity implements BottomNaviga
     private BottomNavigationView mBottomNavigationView;
     private int mNumberOfBottomOptions;
 
+    private static final String KEY_BOTTOM_BAR_SELECTED_INDEX = "BBA_BB_SELECTED_INDEX";
+    private int mBBSelectedIndex = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            onRestoreState(savedInstanceState);
+        }
         setContentView(R.layout.activity_main);
         PopupMenu p  = new PopupMenu(this,null);
         Menu menu = p.getMenu();
@@ -57,14 +63,21 @@ public class BottomBarActivity extends AppCompatActivity implements BottomNaviga
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        SharedStorage.PLAY_NEXT_ENTER_ANIMATION = false;
+        SharedStorage.CAN_PLAY_NEXT_ENTER_ANIMATION = false;
         if(id == R.id.action_one){
             mTabHost.setCurrentTab(0);
+            mBBSelectedIndex = 0;
         }else if(id == R.id.action_two){
             mTabHost.setCurrentTab(1);
+            mBBSelectedIndex = 1;
         }
         else if(id == R.id.action_three){
             mTabHost.setCurrentTab(2);
+            mBBSelectedIndex = 2;
+        }else if(id == R.id.action_four){
+            mBBSelectedIndex = 3;
+        }else if(id == R.id.action_five){
+            mBBSelectedIndex = 4;
         }
         return false;
     }
@@ -124,5 +137,16 @@ public class BottomBarActivity extends AppCompatActivity implements BottomNaviga
 
     private void callSuperBackPressed(){
         super.onBackPressed();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(KEY_BOTTOM_BAR_SELECTED_INDEX,mBBSelectedIndex);
+        super.onSaveInstanceState(outState);
+
+    }
+
+    public void onRestoreState(@NonNull Bundle savedState){
+        mBBSelectedIndex = savedState.getInt(KEY_BOTTOM_BAR_SELECTED_INDEX,-1);//TODO: Have to select the BB item! Bug raised to Google.
     }
 }

@@ -7,6 +7,7 @@ import android.support.annotation.AnimRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.MenuRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.FragmentManager;
@@ -26,7 +27,8 @@ import android.view.animation.Animation;
  * Created by root on 26/10/16.
  */
 
-public abstract class BaseScreenFragment<T extends ViewDataBinding> extends BaseFragment implements Toolbar.OnMenuItemClickListener{
+public abstract class BaseScreenFragment<T extends ViewDataBinding> extends BaseFragment implements Toolbar.OnMenuItemClickListener ,
+        TabContainerCommunicator {
 
     private Toolbar mToolbar;
     private ViewGroup mRootView;
@@ -39,6 +41,17 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
     private static final String IS_ALREADY_CREATED = "BSF_IS_ALREADY_CREATED";
     private boolean isAlreadyCreated = false;
 
+    private static final String KEY_IS_BACK_BUTTON_SHOWN = "BSF_IS_BACK_BUTTON_SHOWN";
+    private boolean mIsBackButtonShown = false;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            onRestoreState(savedInstanceState);
+        }
+    }
 
     @Nullable
     @Override
@@ -80,6 +93,11 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
                 containerId = communicator.getContainerId();
             }
         }
+        if(mIsBackButtonShown){
+            showBackButton();
+        }else {
+            hideBackButton();
+        }
         isAlreadyCreated = true;
     }
 
@@ -106,12 +124,14 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
     protected void hideBackButton(){
         mToolbar.setNavigationIcon(null);
         mToolbar.setNavigationOnClickListener(null);
+        mIsBackButtonShown = false;
     }
 
 
     protected void showBackButton(){
-//        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         mToolbar.setNavigationOnClickListener(new BackNavigationClickListener(this));
+        mIsBackButtonShown = true;
     }
 
     protected void setTitle(String title){
@@ -150,9 +170,7 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
 
 
 
-    public interface BaseScreenCommunicator{
-        @IdRes int getContainerId();
-    }
+
 
 
     /////////////////////////////
@@ -364,11 +382,42 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
         Log.d("onCreateAnimation","onCreateAnimation: transit: "+transit +";; enter: "+enter+";; nextAnim: "+nextAnim+";; "+this);
          Animation animation = super.onCreateAnimation(transit, enter, nextAnim);
-        if(!SharedStorage.PLAY_NEXT_ENTER_ANIMATION && enter){
+        if(!SharedStorage.CAN_PLAY_NEXT_ENTER_ANIMATION && enter){
             animation = new Animation(){};
             animation.setDuration(0);
-            SharedStorage.PLAY_NEXT_ENTER_ANIMATION = true;
+            SharedStorage.CAN_PLAY_NEXT_ENTER_ANIMATION = true;
         }
         return animation;
     }
+
+    @Override
+    public void onBackStackChanged(int backStackCount){
+        if(backStackCount > 0){
+            showBackButton();
+        }else{
+            hideBackButton();
+        }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(KEY_IS_BACK_BUTTON_SHOWN,mIsBackButtonShown);
+        super.onSaveInstanceState(outState);
+    }
+
+    protected void onRestoreState(@NonNull Bundle savedInstanceState){
+        mIsBackButtonShown = savedInstanceState.getBoolean(KEY_IS_BACK_BUTTON_SHOWN,false);
+    }
+
+    public interface BaseScreenCommunicator{
+        @IdRes int getContainerId();
+
+    }
+
 }

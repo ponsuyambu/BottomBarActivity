@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 
@@ -53,5 +54,9 @@ public class BaseFragment extends Fragment {
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
         Log.d(LIFE_CYCLE,"onCreateAnimation - "+this);
         return super.onCreateAnimation(transit, enter, nextAnim);
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return false;
     }
 }

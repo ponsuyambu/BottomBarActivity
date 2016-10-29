@@ -17,7 +17,6 @@ public class Step3 extends BaseScreenFragment<BindingStep3> {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        showBackButton();
     }
 
     @Override
