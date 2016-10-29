@@ -26,6 +26,12 @@ public class Step3 extends BaseScreenFragment<BindingStep3> {
                 startFragment(new FIntent(Step4.class,getArguments()));
             }
         });
+        binding.btnHideBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideBackButton();
+            }
+        });
 
     }
 

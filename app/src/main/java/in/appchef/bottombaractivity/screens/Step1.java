@@ -40,12 +40,7 @@ public class Step1 extends BaseScreenFragment<BindingStep1> {
             }
         });
 
-        view.findViewById(R.id.btnHideBack).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideBackButton();
-            }
-        });
+
     }
 
 
