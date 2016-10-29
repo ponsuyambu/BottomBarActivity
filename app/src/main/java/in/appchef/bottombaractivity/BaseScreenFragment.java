@@ -121,7 +121,7 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
 
     }
 
-    protected void hideBackButton(){
+    protected void hideBackButton(){//TODO: save the state and apply it on back navigation
         mToolbar.setNavigationIcon(null);
         mToolbar.setNavigationOnClickListener(null);
         mIsBackButtonShown = false;
