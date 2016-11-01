@@ -317,7 +317,6 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
                                                           int containerId, FragmentManager manager,
                                                           FragmentTransaction transaction, boolean isAnimate) {
 
-        Log.i("CustomVmc", "Tag " + fIntent.getTag());
         BaseScreenFragment newFragment = null;
         @AnimRes int enterAnimation = 0;
         @AnimRes int exitAnimation = 0;
@@ -334,7 +333,6 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
         }
 
         if (newFragment == null) {
-            Log.i("CustomVmc", "newFragment " + fIntent.getTag());
             newFragment = fIntent.getResultFragment();
         }
         if (isAnimate) {
@@ -352,12 +350,8 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
                     popEnterAnimation, popExitAnimation);
         }
         if (!fIntent.getFlags().contains(FIntent.FLAG_NO_HISTORY)) {
-            Log.i("BACK STACK", "Transaction added to backstack");
             transaction.addToBackStack(fIntent.getTransactionName());
-        } else {
-            Log.i("BACK STACK", "Transaction not added to backstack");
         }
-
         if (fIntent.getFlags().contains(FIntent.FLAG_CLEAR_ALL_HISTORY)) {
             clearBackStack();
         }

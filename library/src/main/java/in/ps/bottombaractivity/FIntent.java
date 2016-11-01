@@ -22,10 +22,10 @@ public class FIntent {
 	public static final int FLAG_NEW_INSTANCE = 4;
 	public static final int FLAG_TRANSACTION_ADD = 5;
 
-	private int enterAnimation = 0;
-	private int exitAnimation = 0;
-	private int popEnterAnimation = 0;
-	private int popExitAnimation = 0;
+	private @AnimRes int enterAnimation = 0;
+	private @AnimRes int exitAnimation = 0;
+	private @AnimRes int popEnterAnimation = 0;
+	private @AnimRes int popExitAnimation = 0;
 	
 	private List<Integer> flags = new ArrayList<Integer>();
 	private Class<? extends BaseScreenFragment> fragmentClass = null;
@@ -34,8 +34,6 @@ public class FIntent {
 	private BaseScreenFragment fragmentObject = null;
 	private String transactionName = null;
 
-	private int parentFragmentPlaceHolderId = 0;
-	
 
 	/**
 	 * Instantiates the FIntent.
@@ -229,7 +227,7 @@ public class FIntent {
 	 *
 	 * @param enterAnimation the new enter animation
 	 */
-	public void setEnterAnimation(int enterAnimation) {
+	public void setEnterAnimation(@AnimRes int enterAnimation) {
 		this.enterAnimation = enterAnimation;
 	}
 
@@ -238,7 +236,7 @@ public class FIntent {
 	 *
 	 * @param exitAnimation the new exit animation
 	 */
-	public void setExitAnimation(int exitAnimation) {
+	public void setExitAnimation(@AnimRes int exitAnimation) {
 		this.exitAnimation = exitAnimation;
 	}
 
@@ -247,7 +245,7 @@ public class FIntent {
 	 *
 	 * @param popEnterAnimation the new pop enter animation
 	 */
-	public void setPopEnterAnimation(int popEnterAnimation) {
+	public void setPopEnterAnimation(@AnimRes int popEnterAnimation) {
 		this.popEnterAnimation = popEnterAnimation;
 	}
 
@@ -256,7 +254,7 @@ public class FIntent {
 	 *
 	 * @param popExitAnimation the new pop exit animation
 	 */
-	public void setPopExitAnimation(int popExitAnimation) {
+	public void setPopExitAnimation(@AnimRes int popExitAnimation) {
 		this.popExitAnimation = popExitAnimation;
 	}
 
