@@ -29,5 +29,5 @@
         app:itemBackground="@color/colorPrimary"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"
-        app:layout_behavior=".BottomNavigationBehavior" />
+        app:layout_behavior="in.ps.bottombaractivity.behaviours.BottomNavigationBehavior" />
 </android.support.design.widget.CoordinatorLayout>

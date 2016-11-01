@@ -1,4 +1,4 @@
-package in.appchef.bottombaractivity;
+package in.ps.bottombaractivity;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -358,7 +358,7 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
             Log.i("BACK STACK", "Transaction not added to backstack");
         }
 
-        if (fIntent.getFlags().contains(FIntent.FLAG_CLEAR_ALLL_HISTORY)) {
+        if (fIntent.getFlags().contains(FIntent.FLAG_CLEAR_ALL_HISTORY)) {
             clearBackStack();
         }
 

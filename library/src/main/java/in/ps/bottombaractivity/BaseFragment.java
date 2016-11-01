@@ -1,4 +1,4 @@
-package in.appchef.bottombaractivity;
+package in.ps.bottombaractivity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

@@ -1,4 +1,4 @@
-package in.appchef.bottombaractivity;
+package in.ps.bottombaractivity;
 
 import android.os.Bundle;
 import android.support.annotation.AnimRes;
@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * FIntent class contains data about the fragment transaction. This has animation info for transaction, fragment to commit and additional
- * back stack flags.
- *
+ * FIntent class contains data about the fragment transaction.
  * @author Ponsuyambu V
  * @since 08/07/2016
  *
@@ -19,7 +17,7 @@ public class FIntent {
 
 	private String tag = null;
 	public static final int FLAG_NO_HISTORY = 1;
-	public static final int FLAG_CLEAR_ALLL_HISTORY = 2;
+	public static final int FLAG_CLEAR_ALL_HISTORY = 2;
 	public static final int FLAG_BRING_TO_FRONT = 3;
 	public static final int FLAG_NEW_INSTANCE = 4;
 	public static final int FLAG_TRANSACTION_ADD = 5;
@@ -105,24 +103,6 @@ public class FIntent {
 	 */
 	public void setBundle(Bundle bundle) {
 		this.bundle = bundle;
-	}
-
-	/**
-	 * Gets the parent fragment place holder id.
-	 *
-	 * @return the parent fragment place holder id
-	 */
-	public int getParentFragmentPlaceHolderId() {
-		return parentFragmentPlaceHolderId;
-	}
-
-	/**
-	 * Sets the parent fragment place holder id.
-	 *
-	 * @param parentFragmentPlaceHolderId the new parent fragment place holder id
-	 */
-	public void setParentFragmentPlaceHolderId(int parentFragmentPlaceHolderId) {
-		this.parentFragmentPlaceHolderId = parentFragmentPlaceHolderId;
 	}
 
 	/**

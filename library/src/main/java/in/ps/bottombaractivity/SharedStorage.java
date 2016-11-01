@@ -1,4 +1,4 @@
-package in.appchef.bottombaractivity;
+package in.ps.bottombaractivity;
 
 /**
  * @author Ponsuyambu V (597265 | i49319)

@@ -1,4 +1,4 @@
-package in.appchef.bottombaractivity;
+package in.ps.bottombaractivity.behaviours;
 
 import android.content.Context;
 import android.os.Parcelable;

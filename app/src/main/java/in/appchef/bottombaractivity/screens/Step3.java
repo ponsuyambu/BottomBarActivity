@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import in.appchef.bottombaractivity.BaseScreenFragment;
-import in.appchef.bottombaractivity.FIntent;
+import in.ps.bottombaractivity.BaseScreenFragment;
+import in.ps.bottombaractivity.FIntent;
 import in.appchef.bottombaractivity.R;
 import in.appchef.bottombaractivity.databinding.BindingStep3;
 

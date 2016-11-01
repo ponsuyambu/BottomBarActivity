@@ -1,8 +1,12 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="in.ps.library">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="in.ps.bottombaractivity">
 
-    <application android:allowBackup="true" android:label="@string/app_name"
-        android:supportsRtl="true">
+    <application android:allowBackup="true" android:label="@string/app_name">
 
+        <activity android:name=".BottomBarActivity"
+            android:theme="@style/BottomBarActivity.NoActionBar"
+            >
+
+        </activity>
     </application>
 
 </manifest>

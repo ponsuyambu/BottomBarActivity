@@ -1,4 +1,4 @@
-package in.appchef.bottombaractivity;
+package in.ps.bottombaractivity;
 
 /**
  * Created by root on 30/10/16.

@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupWindow;
 
-import in.appchef.bottombaractivity.BaseScreenFragment;
-import in.appchef.bottombaractivity.FIntent;
+import in.ps.bottombaractivity.BaseScreenFragment;
+import in.ps.bottombaractivity.FIntent;
 import in.appchef.bottombaractivity.R;
 import in.appchef.bottombaractivity.databinding.BindingStep1;
 

@@ -1,4 +1,4 @@
-package in.appchef.bottombaractivity;
+package in.ps.bottombaractivity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -13,13 +13,8 @@ import android.support.v7.widget.PopupMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.util.HashMap;
 import java.util.Map;
-
-import in.appchef.bottombaractivity.screens.ParamKeys;
-import in.appchef.bottombaractivity.screens.Step1;
-
-public class BottomBarActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener,ParamKeys{
+public class BottomBarActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
     private FragmentTabHost mTabHost;
     private BottomNavigationView mBottomNavigationView;
@@ -102,29 +97,7 @@ public class BottomBarActivity extends AppCompatActivity implements BottomNaviga
     }
 
     public Map<Integer,BottomNavigationViewScreen> getScreens(){
-        Map<Integer,BottomNavigationViewScreen> screens = new HashMap<>();
-        Bundle screen1Bundle = new Bundle();
-        screen1Bundle.putString(KEY_TAB,"Tab 1");
-        BottomNavigationViewScreen screen1 = new BottomNavigationViewScreen(Step1.class,screen1Bundle);
-        Bundle screen2Bundle = new Bundle();
-        screen2Bundle.putString(KEY_TAB,"Tab 2");
-        BottomNavigationViewScreen screen2 = new BottomNavigationViewScreen(Step1.class,screen2Bundle);
-        Bundle screen3Bundle = new Bundle();
-        screen3Bundle.putString(KEY_TAB,"Tab 3");
-        BottomNavigationViewScreen screen3 = new BottomNavigationViewScreen(Step1.class,screen3Bundle);
-        Bundle screen4Bundle = new Bundle();
-        screen4Bundle.putString(KEY_TAB,"Tab 4");
-        BottomNavigationViewScreen screen4 = new BottomNavigationViewScreen(Step1.class,screen4Bundle);
-        Bundle screen5Bundle = new Bundle();
-        screen5Bundle.putString(KEY_TAB,"Tab 5");
-        BottomNavigationViewScreen screen5 = new BottomNavigationViewScreen(Step1.class,screen5Bundle);
-
-        screens.put(R.id.action_one,screen1);
-        screens.put(R.id.action_two,screen2);
-        screens.put(R.id.action_three,screen3);
-        screens.put(R.id.action_four,screen4);
-        screens.put(R.id.action_five,screen5);
-        return screens;
+       return null;
     }
 
     @Override

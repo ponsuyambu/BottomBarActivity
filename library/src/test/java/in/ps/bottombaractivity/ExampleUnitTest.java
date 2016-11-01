@@ -1,4 +1,4 @@
-package in.ps.library;
+package in.ps.bottombaractivity;
 
 import org.junit.Test;
 
