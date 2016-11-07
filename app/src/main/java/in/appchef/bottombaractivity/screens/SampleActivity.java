@@ -5,6 +5,7 @@ import android.os.Bundle;
 import java.util.HashMap;
 import java.util.Map;
 
+import in.appchef.bottombaractivity.screens.tablet.MultiPaneFragment;
 import in.ps.bottombaractivity.BottomBarActivity;
 
 public class SampleActivity extends BottomBarActivity {
@@ -19,7 +20,7 @@ public class SampleActivity extends BottomBarActivity {
         Map<Integer,BottomNavigationViewScreen> screens = new HashMap<>();
         Bundle screen1Bundle = new Bundle();
         screen1Bundle.putString(ParamKeys.KEY_TAB,"Tab 1");
-        BottomNavigationViewScreen screen1 = new BottomNavigationViewScreen(Step1.class,screen1Bundle);
+        BottomNavigationViewScreen screen1 = new BottomNavigationViewScreen(MultiPaneFragment.class, screen1Bundle);
         Bundle screen2Bundle = new Bundle();
         screen2Bundle.putString(ParamKeys.KEY_TAB,"Tab 2");
         BottomNavigationViewScreen screen2 = new BottomNavigationViewScreen(Step1.class,screen2Bundle);

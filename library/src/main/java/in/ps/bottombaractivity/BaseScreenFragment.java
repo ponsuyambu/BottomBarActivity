@@ -23,6 +23,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 
+import in.ps.bottombaractivity.execeptions.ActionBarNotAddedException;
+
 /**
  * Created by root on 26/10/16.
  */
@@ -30,24 +32,28 @@ import android.view.animation.Animation;
 public abstract class BaseScreenFragment<T extends ViewDataBinding> extends BaseFragment implements Toolbar.OnMenuItemClickListener ,
         TabContainerCommunicator {
 
+    private static final String KEY_IS_ALREADY_CREATED = "BSF_IS_ALREADY_CREATED";
+    private static final String KEY_IS_BACK_BUTTON_SHOWN = "BSF_IS_BACK_BUTTON_SHOWN";
+    private static final String KEY_CAN_ADD_ACTION_BAR = "BSF_CAN_ADD_ACTION_BAR";
+    protected final String TAG = getClass().getSimpleName();
+    protected T binding;
     private Toolbar mToolbar;
     private ViewGroup mRootView;
     private View mScreenView;
     private @IdRes int containerId;
     private FragmentTransaction transaction = null;
     private FragmentManager manager = null;
-    protected  final String TAG = getClass().getSimpleName();
-    protected T binding;
-    private static final String IS_ALREADY_CREATED = "BSF_IS_ALREADY_CREATED";
-    private boolean isAlreadyCreated = false;
-
-    private static final String KEY_IS_BACK_BUTTON_SHOWN = "BSF_IS_BACK_BUTTON_SHOWN";
+    private boolean isAlreadyCreated = false;//TODO: save state
     private boolean mIsBackButtonShown = false;
-
+    private boolean mCanAddActionBar = true; //TODO: Save state
+    private boolean mIsActionBarAdded = false; //TODO: Save state
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getParentFragment() == null) {
+            setRetainInstance(true);
+        }
         if(savedInstanceState != null){
             onRestoreState(savedInstanceState);
         }
@@ -59,8 +65,13 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
         mRootView = (ViewGroup) inflater.inflate(R.layout.screen_action_bar,container,false);
         binding = DataBindingUtil.inflate(inflater,getLayoutResource(),mRootView,false);
         mScreenView = binding.getRoot();
+        if (!mCanAddActionBar) {
+            mIsActionBarAdded = false;
+            return mScreenView;
+        }
         setMarginForScreen(getAndroidActionBarHeight());
         mRootView.addView(mScreenView);
+        mIsActionBarAdded = true;
         return mRootView;
     }
 
@@ -93,12 +104,25 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
                 containerId = communicator.getContainerId();
             }
         }
-        if(mIsBackButtonShown){
-            showBackButton();
-        }else {
-            hideBackButton();
+        if (mIsActionBarAdded) {
+            if (mIsBackButtonShown) {
+                showBackButton();
+            } else {
+                hideBackButton();
+            }
         }
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         isAlreadyCreated = true;
+    }
+
+    protected boolean isAlreadyCreated() {
+        return isAlreadyCreated;
     }
 
     protected abstract @LayoutRes int getLayoutResource();
@@ -111,27 +135,42 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
         return ((AppCompatActivity)getActivity());
     }
 
-    protected Toolbar getToolBar(){
+    protected
+    @Nullable
+    Toolbar getToolBar() {
         return mToolbar;
     }
 
     protected void hideToolBar(){
-        mToolbar.setVisibility(View.GONE);
-        setMarginForScreen(0);
+        if (mIsActionBarAdded) {
+            mToolbar.setVisibility(View.GONE);
+            setMarginForScreen(0);
+        } else {
+            throw new ActionBarNotAddedException("Action bar is not added to this screen. Call setCanAddActionBar(true) in onCreate!");
+        }
+
 
     }
 
     protected void hideBackButton(){//TODO: save the state and apply it on back navigation
-        mToolbar.setNavigationIcon(null);
-        mToolbar.setNavigationOnClickListener(null);
-        mIsBackButtonShown = false;
+        if (mIsActionBarAdded) {
+            mToolbar.setNavigationIcon(null);
+            mToolbar.setNavigationOnClickListener(null);
+            mIsBackButtonShown = false;
+        } else {
+            throw new ActionBarNotAddedException("Action bar is not added to this screen. Call setCanAddActionBar(true) in onCreate!");
+        }
+
     }
 
 
     protected void showBackButton(){
-        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-        mToolbar.setNavigationOnClickListener(new BackNavigationClickListener(this));
-        mIsBackButtonShown = true;
+        if (mIsActionBarAdded) {
+            mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+            mToolbar.setNavigationOnClickListener(new BackNavigationClickListener(this));
+            mIsBackButtonShown = true;
+        }
+
     }
 
     protected void setTitle(String title){
@@ -149,31 +188,10 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
         return false;
     }
 
-    protected void startFragment(){
-
+    protected void setCanAddActionBar(boolean canAddActionBar) {
+        this.mCanAddActionBar = canAddActionBar;
     }
 
-
-    private static class BackNavigationClickListener implements View.OnClickListener{
-
-        BaseScreenFragment mHandlingFragment;
-
-        public BackNavigationClickListener(BaseScreenFragment handlingFragment){
-            mHandlingFragment = handlingFragment;
-        }
-
-        @Override
-        public void onClick(View view) {
-            mHandlingFragment.getAppCompatActivity().onBackPressed();
-        }
-    }
-
-
-
-
-
-
-    /////////////////////////////
     /**
      * Starts the next fragment specified in the FIntent.
      *
@@ -186,6 +204,9 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
         return startFragment(fIntent, containerId, getFragmentManager());
 
     }
+
+
+    /////////////////////////////
 
     /**
      * Starts the next fragment specified in the FIntent.
@@ -336,7 +357,6 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
             newFragment = fIntent.getResultFragment();
         }
         if (isAnimate) {
-            Log.i("BACK STACK", "Transaction setCustomAnimations");
             enterAnimation = fIntent.getEnterAnimation() == 0 ? R.anim.right_to_left_in
                     : fIntent.getEnterAnimation();
             exitAnimation = fIntent.getExitAnimation() == 0 ? R.anim.right_to_left_exit
@@ -387,9 +407,13 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
     @Override
     public void onBackStackChanged(int backStackCount){
         if(backStackCount > 0){
-            showBackButton();
+            if (mIsActionBarAdded) {
+                showBackButton();
+            }
         }else{
-            hideBackButton();
+            if (mIsActionBarAdded) {
+                hideBackButton();
+            }
         }
     }
 
@@ -402,16 +426,32 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(KEY_IS_BACK_BUTTON_SHOWN,mIsBackButtonShown);
+        outState.putBoolean(KEY_IS_ALREADY_CREATED, isAlreadyCreated);
         super.onSaveInstanceState(outState);
     }
 
     protected void onRestoreState(@NonNull Bundle savedInstanceState){
         mIsBackButtonShown = savedInstanceState.getBoolean(KEY_IS_BACK_BUTTON_SHOWN,false);
+        isAlreadyCreated = savedInstanceState.getBoolean(KEY_IS_ALREADY_CREATED, false);
     }
 
     public interface BaseScreenCommunicator{
         @IdRes int getContainerId();
 
+    }
+
+    private static class BackNavigationClickListener implements View.OnClickListener {
+
+        BaseScreenFragment mHandlingFragment;
+
+        public BackNavigationClickListener(BaseScreenFragment handlingFragment) {
+            mHandlingFragment = handlingFragment;
+        }
+
+        @Override
+        public void onClick(View view) {
+            mHandlingFragment.getAppCompatActivity().onBackPressed();
+        }
     }
 
 }

@@ -1,29 +1,29 @@
 package in.ps.bottombaractivity;
 
 import android.app.Activity;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.Map;
+
+import in.ps.bottombaractivity.databinding.BindingTab;
 
 
 /**
  * Created by root on 17/10/16.
  */
 
-public class TabFragment extends BaseFragment implements BaseScreenFragment.BaseScreenCommunicator, FragmentManager.OnBackStackChangedListener{
+public class TabFragment<T extends ViewDataBinding> extends BaseScreenFragment<BindingTab> implements BaseScreenFragment.BaseScreenCommunicator, FragmentManager.OnBackStackChangedListener {
     public static final String KEY_MENU_ID = "MENU_ID";
     public static final String KEY_INITIAL_FRAGMENT = "INITIAL_FRAGMENT";
     private static final String KEY_TAB_NAME = "TAB_NAME";
     private static final String KEY_ID = "ID";
-    private boolean isAlreadyCreated = false;
     private String mTabName = "TAB";
     private int mId = 0;
     private
@@ -57,9 +57,7 @@ public class TabFragment extends BaseFragment implements BaseScreenFragment.Base
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            isAlreadyCreated = savedInstanceState.getBoolean("isAlreadyCreated", false);
-        }
+        setCanAddActionBar(false);
         if (getArguments() != null) {
             if (getArguments().getString(KEY_TAB_NAME) != null) {
                 mTabName = mTabName + " - " + getArguments().getString(KEY_TAB_NAME);
@@ -70,21 +68,19 @@ public class TabFragment extends BaseFragment implements BaseScreenFragment.Base
         getChildFragmentManager().addOnBackStackChangedListener(this);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.tab_fragment, container, false);
-    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (!isAlreadyCreated) {
+        if (!isAlreadyCreated()) {
             commitFragment();
         }
-        isAlreadyCreated = true;
+    }
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.tab_fragment;
     }
 
     private void commitFragment() {
@@ -119,12 +115,6 @@ public class TabFragment extends BaseFragment implements BaseScreenFragment.Base
 
 //
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean("isAlreadyCreated", isAlreadyCreated);
-        super.onSaveInstanceState(outState);
     }
 
     public boolean onBackPressed(){

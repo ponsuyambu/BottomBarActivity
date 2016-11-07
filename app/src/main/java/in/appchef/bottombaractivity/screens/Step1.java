@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupWindow;
 
-import in.ps.bottombaractivity.BaseScreenFragment;
-import in.ps.bottombaractivity.FIntent;
 import in.appchef.bottombaractivity.R;
 import in.appchef.bottombaractivity.databinding.BindingStep1;
+import in.ps.bottombaractivity.BaseScreenFragment;
+import in.ps.bottombaractivity.FIntent;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
@@ -32,7 +32,7 @@ public class Step1 extends BaseScreenFragment<BindingStep1> {
         super.onViewCreated(view, savedInstanceState);
         setTitle("Step 1");
         inflateMenu(R.menu.menu_step1);
-        binding.tvStep.setText(getArguments().getString(ParamKeys.KEY_TAB) + " - Step 1 ");
+        binding.tvStep.setText(getArguments().getString(ParamKeys.KEY_TAB, "") + " - Step 1 ");
         binding.btnGoStep2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
