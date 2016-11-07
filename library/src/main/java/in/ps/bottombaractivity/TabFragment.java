@@ -117,25 +117,31 @@ public class TabFragment<T extends ViewDataBinding> extends BaseScreenFragment<B
         }
     }
 
-    public boolean onBackPressed(){
-        if(getChildFragmentManager().getBackStackEntryCount() == 0){
-            return false;
-        }else {
-            if(getChildFragmentManager().findFragmentById(getContainerId()) != null){
-                BaseFragment baseFragment = (BaseFragment) getChildFragmentManager().findFragmentById(getContainerId());
-                if(!baseFragment.onBackPressed()){ //if it is not handled
+    public boolean onBackPressed() {
+        boolean isBackHandled = false;
+        if (getChildFragmentManager().findFragmentById(getContainerId()) == null) { //if no fragment is available present in the container
+            return isBackHandled;
+        } else {
+            BaseFragment baseFragment = (BaseFragment) getChildFragmentManager().findFragmentById(getContainerId());
+            isBackHandled = baseFragment.onBackPressed();
+            if (!isBackHandled) { //if child not handled
+                if (getChildFragmentManager().getBackStackEntryCount() > 0) {
                     getChildFragmentManager().popBackStack();
+                    isBackHandled = true;
+                } else {
+                    isBackHandled = false;
                 }
+
             }
-            return true;
         }
+        return isBackHandled;
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(getChildFragmentManager().findFragmentById(getContainerId()) != null) {
+        if (getChildFragmentManager().findFragmentById(getContainerId()) != null) {
             BaseFragment baseFragment = (BaseFragment) getChildFragmentManager().findFragmentById(getContainerId());
-            return baseFragment.onKeyDown(keyCode,event);
+            return baseFragment.onKeyDown(keyCode, event);
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -147,7 +153,7 @@ public class TabFragment<T extends ViewDataBinding> extends BaseScreenFragment<B
 
     @Override
     public void onBackStackChanged() {
-        if(getChildFragmentManager().findFragmentById(getContainerId()) != null) {
+        if (getChildFragmentManager().findFragmentById(getContainerId()) != null) {
             TabContainerCommunicator tabContainerCommunicator = (TabContainerCommunicator) getChildFragmentManager().findFragmentById(getContainerId());
             tabContainerCommunicator.onBackStackChanged(getChildFragmentManager().getBackStackEntryCount());
         }
