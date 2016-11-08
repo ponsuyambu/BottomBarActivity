@@ -1,6 +1,6 @@
 # BottomBarActivity
 
-**Still in under development**
+********************Still in under development*********************
 
 Tired of handling fragment lifecycle and back stack with BottomBar?
 
