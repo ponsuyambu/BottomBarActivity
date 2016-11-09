@@ -14,36 +14,36 @@ import android.view.animation.Animation;
 
 public class BaseFragment extends Fragment {
 
-    private static final String LIFE_CYCLE = "LifeCycle";
+    protected static final String TAG_LIFE_CYCLE = "LifeCycle";
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(LIFE_CYCLE,"onViewCreated - "+this);
+        Log.d(TAG_LIFE_CYCLE, "onViewCreated - " + this);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(LIFE_CYCLE,"onCreate - "+this);
+        Log.d(TAG_LIFE_CYCLE, "onCreate - " + this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(LIFE_CYCLE,"onResume - "+this);
+        Log.d(TAG_LIFE_CYCLE, "onResume - " + this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(LIFE_CYCLE,"onStop - "+this);
+        Log.d(TAG_LIFE_CYCLE, "onStop - " + this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(LIFE_CYCLE,"onDestroy - "+this);
+        Log.d(TAG_LIFE_CYCLE, "onDestroy - " + this);
     }
 
     public boolean onBackPressed(){
@@ -52,7 +52,7 @@ public class BaseFragment extends Fragment {
 
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
-        Log.d(LIFE_CYCLE,"onCreateAnimation - "+this);
+        Log.d(TAG_LIFE_CYCLE, "onCreateAnimation - " + this);
         return super.onCreateAnimation(transit, enter, nextAnim);
     }
 

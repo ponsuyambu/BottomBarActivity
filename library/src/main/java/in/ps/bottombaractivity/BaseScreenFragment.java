@@ -1,5 +1,6 @@
 package in.ps.bottombaractivity;
 
+import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.support.annotation.MenuRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -22,8 +24,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
+import java.lang.reflect.Field;
 
 import in.ps.bottombaractivity.execeptions.ActionBarNotAddedException;
+
+import static in.ps.bottombaractivity.SharedStorage.CAN_PLAY_NEXT_ENTER_ANIMATION;
 
 /**
  * Created by root on 26/10/16.
@@ -35,6 +42,8 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
     private static final String KEY_IS_ALREADY_CREATED = "BSF_IS_ALREADY_CREATED";
     private static final String KEY_IS_BACK_BUTTON_SHOWN = "BSF_IS_BACK_BUTTON_SHOWN";
     private static final String KEY_CAN_ADD_ACTION_BAR = "BSF_CAN_ADD_ACTION_BAR";
+    // Arbitrary value; set it to some reasonable default
+    private static final int DEFAULT_CHILD_ANIMATION_DURATION = 300;
     protected final String TAG = getClass().getSimpleName();
     protected T binding;
     private Toolbar mToolbar;
@@ -62,6 +71,7 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG_LIFE_CYCLE, "onCreateView - " + this);
         mRootView = (ViewGroup) inflater.inflate(R.layout.screen_action_bar,container,false);
         binding = DataBindingUtil.inflate(inflater,getLayoutResource(),mRootView,false);
         mScreenView = binding.getRoot();
@@ -163,7 +173,6 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
 
     }
 
-
     protected void showBackButton(){
         if (mIsActionBarAdded) {
             mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
@@ -192,6 +201,9 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
         this.mCanAddActionBar = canAddActionBar;
     }
 
+
+    /////////////////////////////
+
     /**
      * Starts the next fragment specified in the FIntent.
      *
@@ -204,9 +216,6 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
         return startFragment(fIntent, containerId, getFragmentManager());
 
     }
-
-
-    /////////////////////////////
 
     /**
      * Starts the next fragment specified in the FIntent.
@@ -392,14 +401,64 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
                 FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
+//    @Override
+//    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+//        if(!SharedStorage.CAN_PLAY_NEXT_ENTER_ANIMATION && enter){
+//            Animation animation = new Animation(){};
+//            animation.setDuration(0);
+//            SharedStorage.CAN_PLAY_NEXT_ENTER_ANIMATION = true;
+//            return animation;
+//        }
+//
+//        final Fragment parent = getParentFragment();
+//        // Apply the workaround only if this is a child fragment, and the parent
+//        // is being removed.
+//
+//        if (!enter && parent != null && parent.isRemoving()) {
+//            // This is a workaround for the bug where child fragments disappear when
+//            // the parent is removed (as all children are first removed from the parent)
+//            // See https://code.google.com/p/android/issues/detail?id=55228
+//            Animation doNothingAnim = new AlphaAnimation(1, 1);
+//            doNothingAnim.setDuration(getNextAnimationDuration(parent, DEFAULT_CHILD_ANIMATION_DURATION));
+//            return doNothingAnim;
+//        } else {
+//            return super.onCreateAnimation(transit, enter, nextAnim);
+//        }
+//    }
+
+    private long getNextAnimationDuration(Fragment fragment, long defValue) {
+        try {
+            // Attempt to get the resource ID of the next animation that
+            // will be applied to the given fragment.
+            Field nextAnimField = Fragment.class.getDeclaredField("mNextAnim");
+            nextAnimField.setAccessible(true);
+            int nextAnimResource = nextAnimField.getInt(fragment);
+            Animation nextAnim = AnimationUtils.loadAnimation(fragment.getActivity(), nextAnimResource);
+
+            // ...and if it can be loaded, return that animation's duration
+            return (nextAnim == null) ? defValue : nextAnim.getDuration();
+        } catch (NoSuchFieldException | IllegalAccessException | Resources.NotFoundException ex) {
+            Log.w(TAG, "Unable to load next animation from parent.", ex);
+            return defValue;
+        }
+    }
+
+    @Override
+    public void onAttachFragment(Fragment childFragment) {
+        super.onAttachFragment(childFragment);
+        Log.d(TAG_LIFE_CYCLE, "onAttachFragment: " + childFragment + " in " + this);
+    }
+
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
-        Log.d("onCreateAnimation","onCreateAnimation: transit: "+transit +";; enter: "+enter+";; nextAnim: "+nextAnim+";; "+this);
+        Log.d("onCreateAnimation", "onCreateAnimation: transit: " + transit + ";; enter: "
+                + enter + ";; nextAnim: " + nextAnim + ";; CAN_PLAY_NEXT_ENTER_ANIMATION: " + CAN_PLAY_NEXT_ENTER_ANIMATION
+                + ";; " + this);
          Animation animation = super.onCreateAnimation(transit, enter, nextAnim);
-        if(!SharedStorage.CAN_PLAY_NEXT_ENTER_ANIMATION && enter){
+        if (!CAN_PLAY_NEXT_ENTER_ANIMATION && enter) { //If enter animation is blocked by the BBA, then don't play the animation.
             animation = new Animation(){};
             animation.setDuration(0);
-            SharedStorage.CAN_PLAY_NEXT_ENTER_ANIMATION = true;
+//            CAN_PLAY_NEXT_ENTER_ANIMATION = true;
         }
         return animation;
     }

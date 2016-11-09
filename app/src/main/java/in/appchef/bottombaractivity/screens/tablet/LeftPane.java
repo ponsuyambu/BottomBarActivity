@@ -27,7 +27,7 @@ public class LeftPane extends BaseScreenFragment<BindingLeftPane1> {
             public void onClick(View view) {
                 Bundle screenBundle = new Bundle();
                 screenBundle.putString(ParamKeys.KEY_TAB, "");
-                startFragment(new FIntent(Step3.class, screenBundle));
+                ((BaseScreenFragment) getParentFragment()).startFragment(new FIntent(Step3.class, screenBundle));
             }
         });
     }

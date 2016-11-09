@@ -9,6 +9,7 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
         <activity android:name=".screens.SampleActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@style/BottomBarActivity.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,6 +1,8 @@
 package in.ps.bottombaractivity;
 
 import android.content.DialogInterface;
+import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.MenuRes;
 import android.support.annotation.NonNull;
@@ -10,18 +12,23 @@ import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TabHost;
 
 import java.util.Map;
-public class BottomBarActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
+public class BottomBarActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, TabHost.OnTabChangeListener {
+
+    public static final String TAG = "BottomBarActivity";
+    private static final String KEY_BOTTOM_BAR_SELECTED_INDEX = "BBA_BB_SELECTED_INDEX";
     private FragmentTabHost mTabHost;
     private BottomNavigationView mBottomNavigationView;
     private int mNumberOfBottomOptions;
-
-    private static final String KEY_BOTTOM_BAR_SELECTED_INDEX = "BBA_BB_SELECTED_INDEX";
+    private String mCurrentFragmentTag; //TODO: save state
     private int mBBSelectedIndex = -1;
+    private AsyncTask mChangecanPlayNextEnterAnimationAsyncTask = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +47,7 @@ public class BottomBarActivity extends AppCompatActivity implements BottomNaviga
 
         mBottomNavigationView.inflateMenu(getBottomMenu());
         mTabHost.setup(this, getSupportFragmentManager(), android.R.id.tabcontent);
+        mTabHost.setOnTabChangedListener(this);
 
         for(int i =0; i<mNumberOfBottomOptions;i++){
             MenuItem item = menu.getItem(i);
@@ -57,7 +65,7 @@ public class BottomBarActivity extends AppCompatActivity implements BottomNaviga
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        SharedStorage.CAN_PLAY_NEXT_ENTER_ANIMATION = false;
+
         if(id == R.id.action_one){
             mTabHost.setCurrentTab(0);
             mBBSelectedIndex = 0;
@@ -82,19 +90,23 @@ public class BottomBarActivity extends AppCompatActivity implements BottomNaviga
         return R.menu.menu_bottom_navigation;
     }
 
-    public static class BottomNavigationViewScreen{
-        Class<? extends Fragment> fragmentClass;
-        Bundle extras;
-
-        public BottomNavigationViewScreen(Class<? extends Fragment> fragmentClass) {
-            this.fragmentClass = fragmentClass;
+    @Override
+    public void onTabChanged(String tabId) {
+        mCurrentFragmentTag = tabId;
+        //DevHelp: If Tab is changed, block the fragments' enter animation(SharedStorage.CAN_PLAY_NEXT_ENTER_ANIMATION = false).
+        //Since we are not about the level of nested fragments, as temp work around the flag value set true after the particular time.
+        //TODO: AsyncTask logic has to improvised.
+        if (mChangecanPlayNextEnterAnimationAsyncTask != null &&
+                mChangecanPlayNextEnterAnimationAsyncTask.getStatus() == AsyncTask.Status.RUNNING) {
+            mChangecanPlayNextEnterAnimationAsyncTask.cancel(true);
+            mChangecanPlayNextEnterAnimationAsyncTask = null;
         }
-
-        public BottomNavigationViewScreen(Class<? extends Fragment> fragmentClass, Bundle extras) {
-            this.fragmentClass = fragmentClass;
-            this.extras = extras;
-        }
+        SharedStorage.CAN_PLAY_NEXT_ENTER_ANIMATION = false;//on Tab change, block all fragments enter animation
+        mChangecanPlayNextEnterAnimationAsyncTask = new ChangecanPlayNextEnterAnimationAsyncTask();
+        mChangecanPlayNextEnterAnimationAsyncTask.execute();
     }
+
+    ;
 
     public Map<Integer,BottomNavigationViewScreen> getScreens(){
        return null;
@@ -137,5 +149,46 @@ public class BottomBarActivity extends AppCompatActivity implements BottomNaviga
 
     public void onRestoreState(@NonNull Bundle savedState){
         mBBSelectedIndex = savedState.getInt(KEY_BOTTOM_BAR_SELECTED_INDEX,-1);//TODO: Have to select the BB item! Bug raised to Google.
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        TabFragment currentTabFragment = (TabFragment) getSupportFragmentManager().findFragmentByTag(
+                mCurrentFragmentTag);
+        getSupportFragmentManager().beginTransaction().detach(currentTabFragment).attach(currentTabFragment).commit();
+    }
+
+    static class ChangecanPlayNextEnterAnimationAsyncTask extends AsyncTask {
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            int counter = 1;
+            while (counter <= 600) {
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+                ++counter;
+            }
+            SharedStorage.CAN_PLAY_NEXT_ENTER_ANIMATION = true;
+            Log.d("onCreateAnimation", "CAN_PLAY_NEXT_ENTER_ANIMATION value changed: " + SharedStorage.CAN_PLAY_NEXT_ENTER_ANIMATION);
+            return null;
+        }
+    }
+
+    public static class BottomNavigationViewScreen {
+        Class<? extends Fragment> fragmentClass;
+        Bundle extras;
+
+        public BottomNavigationViewScreen(Class<? extends Fragment> fragmentClass) {
+            this.fragmentClass = fragmentClass;
+        }
+
+        public BottomNavigationViewScreen(Class<? extends Fragment> fragmentClass, Bundle extras) {
+            this.fragmentClass = fragmentClass;
+            this.extras = extras;
+        }
     }
 }
