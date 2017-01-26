@@ -34,7 +34,7 @@ import in.ps.bottombaractivity.execeptions.ActionBarNotAddedException;
 import static in.ps.bottombaractivity.SharedStorage.CAN_PLAY_NEXT_ENTER_ANIMATION;
 
 /**
- * Created by root on 26/10/16.
+ * Created by root on 26/10/16..
  */
 
 public abstract class BaseScreenFragment<T extends ViewDataBinding> extends BaseFragment implements Toolbar.OnMenuItemClickListener ,
