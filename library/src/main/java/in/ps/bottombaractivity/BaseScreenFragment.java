@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
@@ -43,7 +44,7 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
     private static final String KEY_IS_BACK_BUTTON_SHOWN = "BSF_IS_BACK_BUTTON_SHOWN";
     private static final String KEY_CAN_ADD_ACTION_BAR = "BSF_CAN_ADD_ACTION_BAR";
     // Arbitrary value; set it to some reasonable default
-    private static final int DEFAULT_CHILD_ANIMATION_DURATION = 300;
+    private static final int DEFAULT_CHILD_ANIMATION_DURATION = 3000;
     protected final String TAG = getClass().getSimpleName();
     protected T binding;
     private Toolbar mToolbar;
@@ -56,6 +57,7 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
     private boolean mIsBackButtonShown = false;
     private boolean mCanAddActionBar = true; //TODO: Save state
     private boolean mIsActionBarAdded = false; //TODO: Save state
+    private boolean mDisableTransitionAnimations = false; //TODO: Save state
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,6 +91,14 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
         CoordinatorLayout.LayoutParams screenViewLayoutParams = (CoordinatorLayout.LayoutParams) mScreenView.getLayoutParams();
         screenViewLayoutParams.topMargin = actionBarHeight;
         mScreenView.setLayoutParams(screenViewLayoutParams);
+    }
+
+    public void disableTransitionAnimations() {
+        this.mDisableTransitionAnimations = true;
+    }
+
+    public void enableTransitionAnimations() {
+        this.mDisableTransitionAnimations = false;
     }
 
     private int getAndroidActionBarHeight(){
@@ -455,10 +465,23 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
                 + enter + ";; nextAnim: " + nextAnim + ";; CAN_PLAY_NEXT_ENTER_ANIMATION: " + CAN_PLAY_NEXT_ENTER_ANIMATION
                 + ";; " + this);
          Animation animation = super.onCreateAnimation(transit, enter, nextAnim);
-        if (!CAN_PLAY_NEXT_ENTER_ANIMATION && enter) { //If enter animation is blocked by the BBA, then don't play the animation.
+        if ((!CAN_PLAY_NEXT_ENTER_ANIMATION && enter)) { //If enter animation is blocked by the BBA, then don't play the animation.
             animation = new Animation(){};
             animation.setDuration(0);
+            return animation;
 //            CAN_PLAY_NEXT_ENTER_ANIMATION = true;
+        }
+
+        final Fragment parent = getParentFragment();
+        // Apply the workaround only if this is a child fragment, and the parent
+        // is being removed.
+
+        if (!enter && parent != null && parent.isRemoving()) {
+            // This is a workaround for the bug where child fragments disappear when
+            // the parent is removed (as all children are first removed from the parent)
+            // See https://code.google.com/p/android/issues/detail?id=55228
+            animation = new AlphaAnimation(1, 1);
+            animation.setDuration(getNextAnimationDuration(parent, DEFAULT_CHILD_ANIMATION_DURATION));
         }
         return animation;
     }

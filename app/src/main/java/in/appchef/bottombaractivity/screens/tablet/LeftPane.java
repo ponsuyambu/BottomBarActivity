@@ -18,8 +18,15 @@ import in.ps.bottombaractivity.FIntent;
 public class LeftPane extends BaseScreenFragment<BindingLeftPane1> {
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        disableTransitionAnimations();
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         setTitle("Country List");
         inflateMenu(R.menu.menu_bottom_navigation);
         binding.btnShowStep3.setOnClickListener(new View.OnClickListener() {
