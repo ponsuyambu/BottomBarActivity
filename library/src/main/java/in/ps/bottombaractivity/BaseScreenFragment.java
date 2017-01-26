@@ -55,7 +55,7 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
     private FragmentManager manager = null;
     private boolean isAlreadyCreated = false;//TODO: save state
     private boolean mIsBackButtonShown = false;
-    private boolean mCanAddActionBar = true; //TODO: Save state
+    private boolean mCanAddActionBar = false; //TODO: Save state
     private boolean mIsActionBarAdded = false; //TODO: Save state
     private boolean mDisableTransitionAnimations = false; //TODO: Save state
 
@@ -115,7 +115,9 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
+//        mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        mToolbar = ((BottomBarActivity)getActivity()).getToolBar();
+        mIsActionBarAdded = true;
         if(getParentFragment() != null){
             if(!(getParentFragment() instanceof BaseScreenCommunicator)){ //if parent fragment not implements communicator class, throw exception
                 throw new IllegalStateException("Parent fragment "+getParentFragment()+" should implement BaseScreenCommunicator");
@@ -193,13 +195,27 @@ public abstract class BaseScreenFragment<T extends ViewDataBinding> extends Base
     }
 
     protected void setTitle(String title){
-        mToolbar.setTitle(title);
+        if(mToolbar != null){
+            mToolbar.setTitle(title);
+        }
+
     }
 
     protected void inflateMenu(@MenuRes int menuRes){
-        mToolbar.inflateMenu(menuRes);
-        mToolbar.setOnMenuItemClickListener(this);
+        if(mToolbar != null){
+            mToolbar.getMenu().clear();
+            mToolbar.inflateMenu(menuRes);
+            mToolbar.setOnMenuItemClickListener(this);
+        }
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(mToolbar != null) {
+            mToolbar.getMenu().clear();
+        }
     }
 
     @Override

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">library</string>
+    <integer name="anim_duration_value">300</integer>
 </resources>

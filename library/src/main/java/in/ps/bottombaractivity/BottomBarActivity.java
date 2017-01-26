@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +30,7 @@ public class BottomBarActivity extends AppCompatActivity implements BottomNaviga
     private String mCurrentFragmentTag; //TODO: save state
     private int mBBSelectedIndex = -1;
     private AsyncTask mChangecanPlayNextEnterAnimationAsyncTask = null;
-
+    Toolbar mToolBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +38,8 @@ public class BottomBarActivity extends AppCompatActivity implements BottomNaviga
             onRestoreState(savedInstanceState);
         }
         setContentView(R.layout.activity_main);
+        mToolBar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolBar);
         PopupMenu p  = new PopupMenu(this,null);
         Menu menu = p.getMenu();
 
@@ -62,6 +65,9 @@ public class BottomBarActivity extends AppCompatActivity implements BottomNaviga
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);
     }
 
+    public Toolbar getToolBar(){
+        return mToolBar;
+    }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();

@@ -8,13 +8,23 @@
         android:label="@string/app_name"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".screens.SampleActivity"
+        <activity
+            android:name=".screens.SampleActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@style/BottomBarActivity.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="anxdroid.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".screens.SingleActionBarActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@style/BottomBarActivity.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="anxdroid.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

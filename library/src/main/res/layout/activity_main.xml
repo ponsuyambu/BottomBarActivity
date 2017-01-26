@@ -11,13 +11,17 @@
         android:background="#888"
         android:fillViewport="true">
 
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#00f">
+
+            <include layout="@layout/toolbar"/>
+
             <include layout="@layout/bottom_bar_navigation_container" />
 
-        </RelativeLayout>
+        </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.BottomNavigationView
@@ -26,7 +30,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        app:itemBackground="@color/colorPrimary"
+        app:itemBackground="@color/white"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:itemIconTint="@color/bottom_bar_item_color"
         app:itemTextColor="@color/bottom_bar_item_color"
         app:layout_behavior="in.ps.bottombaractivity.behaviours.BottomNavigationBehavior" />

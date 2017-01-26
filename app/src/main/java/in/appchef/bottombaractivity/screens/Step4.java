@@ -19,6 +19,7 @@ public class Step4 extends BaseScreenFragment<BindingStep4> {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setTitle("Step 4");
+        inflateMenu(R.menu.menu_step4);
         binding.tvStep.setText(getArguments().getString(ParamKeys.KEY_TAB) + " - Step 4 ");
         binding.btnGoStep5.setOnClickListener(new View.OnClickListener() {
             @Override
