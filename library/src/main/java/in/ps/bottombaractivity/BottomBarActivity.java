@@ -69,19 +69,24 @@ public class BottomBarActivity extends AppCompatActivity implements BottomNaviga
         if(id == R.id.action_one){
             mTabHost.setCurrentTab(0);
             mBBSelectedIndex = 0;
+            return true;
         }else if(id == R.id.action_two){
             mTabHost.setCurrentTab(1);
             mBBSelectedIndex = 1;
+            return true;
         }
         else if(id == R.id.action_three){
             mTabHost.setCurrentTab(2);
             mBBSelectedIndex = 2;
+            return true;
         }else if(id == R.id.action_four){
             mBBSelectedIndex = 3;
             mTabHost.setCurrentTab(3);
+            return true;
         }else if(id == R.id.action_five){
             mBBSelectedIndex = 4;
             mTabHost.setCurrentTab(4);
+            return true;
         }
         return false;
     }
@@ -94,7 +99,7 @@ public class BottomBarActivity extends AppCompatActivity implements BottomNaviga
     public void onTabChanged(String tabId) {
         mCurrentFragmentTag = tabId;
         //DevHelp: If Tab is changed, block the fragments' enter animation(SharedStorage.CAN_PLAY_NEXT_ENTER_ANIMATION = false).
-        //Since we are not about the level of nested fragments, as temp work around the flag value set true after the particular time.
+        //Since we are not sure about the level of nested fragments, as temp work around the flag value set true after the particular time.
         //TODO: AsyncTask logic has to improvised.
         if (mChangecanPlayNextEnterAnimationAsyncTask != null &&
                 mChangecanPlayNextEnterAnimationAsyncTask.getStatus() == AsyncTask.Status.RUNNING) {

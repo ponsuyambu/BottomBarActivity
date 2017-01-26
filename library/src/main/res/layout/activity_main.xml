@@ -7,14 +7,14 @@
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="#888"
-        android:fillViewport="true"
-        android:layout_height="match_parent">
+        android:fillViewport="true">
 
         <RelativeLayout
-            android:background="#00f"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#00f">
             <include layout="@layout/bottom_bar_navigation_container" />
 
         </RelativeLayout>
@@ -27,7 +27,7 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         app:itemBackground="@color/colorPrimary"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
+        app:itemIconTint="@color/bottom_bar_item_color"
+        app:itemTextColor="@color/bottom_bar_item_color"
         app:layout_behavior="in.ps.bottombaractivity.behaviours.BottomNavigationBehavior" />
 </android.support.design.widget.CoordinatorLayout>
